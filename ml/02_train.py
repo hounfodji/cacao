@@ -23,7 +23,7 @@ from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
+import keras
 from tensorflow.keras import layers
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
@@ -47,8 +47,8 @@ PHASE2_EPOCHS = 30
 PHASE2_LR = 1e-5
 UNFREEZE_LAYERS = 30  # last N layers of base model
 
-CLASS_NAMES = ["healthy", "black_pod", "cssvd", "pod_borer", "mirid"]
-NUM_CLASSES = len(CLASS_NAMES)
+CLASS_NAMES = ["healthy", "cssvd", "anthracnose", "black_pod"]
+NUM_CLASSES = len(CLASS_NAMES)  # 4 classes for v1
 
 # ── Data pipeline ──────────────────────────────────────────────────────────────
 

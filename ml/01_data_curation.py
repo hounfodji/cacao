@@ -2,26 +2,30 @@
 Step 1: Data curation for West African cacao disease classifier.
 
 Datasets used:
-- KaraAgroAI: 17,703 images, sub-Saharan Africa context (PRIMARY)
-  https://github.com/KaraAgroAI/cocoa-disease-dataset
-- Sykes Ecuador: 7,220 images (SUPPLEMENTARY — visual diversity only,
-  Latin American disease classes are EXCLUDED)
+- KaraAgroAI — Harvard Dataverse doi:10.7910/DVN/BBGQSP (PRIMARY)
+  ~17,703 images, sub-Saharan Africa, West African diseases
+  Classes in source: Healthy, CSSVD, Anthracnose
+- Sykes Ecuador — OSF osf.io/2fw6g (SUPPLEMENTARY)
+  7,220 images total — we use only: BPR (Black Pod Rot), Healthy
+  We EXCLUDE: FPR (Frosty Pod Rot), WBD (Witches' Broom) — Latin American only
 
 Output: data/curated/ with train/val/test splits
-  data/curated/train/{healthy, black_pod, cssvd, pod_borer, mirid}/
+  data/curated/train/{healthy, cssvd, anthracnose, black_pod}/
   data/curated/val/{...}/
   data/curated/test/{...}/
 
-Classes (5 total):
-  0 - healthy
-  1 - black_pod      (Phytophthora palmivora/megakarya)
-  2 - cssvd          (Cocoa Swollen Shoot Virus Disease)
-  3 - pod_borer      (Conopomorpha cramerella)
-  4 - mirid          (Sahlbergella singularis / Distantiella theobroma)
+Classes (4 total for v1):
+  0 - healthy       KaraAgroAI + Sykes Healthy
+  1 - cssvd         KaraAgroAI CSSVD (Cocoa Swollen Shoot Virus Disease)
+  2 - anthracnose   KaraAgroAI Anthracnose (Colletotrichum pod disease, West Africa)
+  3 - black_pod     Sykes BPR (Black Pod Rot, Phytophthora — supplement)
+
+v2 additions (more data needed):
+  pod_borer         GitHub Br-Al dataset (~103 images — too few for v1)
+  mirid             Roboflow Wolcan S — to be evaluated
 
 NOTE: CSSVD symptoms are subtle (leaf deformation, stem swelling).
-      If CSSVD images in KaraAgroAI are <500, drop the class and train
-      on 4 classes (healthy + black_pod + pod_borer + mirid).
+      If CSSVD images are <500, set INCLUDE_CSSVD = False and train on 3 classes.
 """
 
 import os
@@ -39,29 +43,30 @@ from tqdm import tqdm
 
 DATA_ROOT = Path("data")
 RAW_KARAAGRO = DATA_ROOT / "raw" / "karaagro"
-RAW_ECUADOR = DATA_ROOT / "raw" / "sykes_ecuador"
+RAW_SYKES = DATA_ROOT / "raw" / "sykes"
 CURATED = DATA_ROOT / "curated"
 
 SPLITS = {"train": 0.70, "val": 0.15, "test": 0.15}
 RANDOM_SEED = 42
 
-# West African target classes only.
-# Keys = folder names in source dataset (adjust to match actual dataset layout).
-# Values = our canonical class names.
+# KaraAgroAI folder names → our canonical class names.
+# Harvard Dataverse source uses title-case folder names.
 KARAAGRO_CLASS_MAP = {
+    "Healthy": "healthy",
+    "CSSVD": "cssvd",
+    "Anthracnose": "anthracnose",
+    # Fallbacks if folder names differ in the downloaded zip:
     "healthy": "healthy",
-    "black_pod": "black_pod",
     "cssvd": "cssvd",
-    "pod_borer": "pod_borer",
-    "mirid": "mirid",
-    # Add other mappings here if KaraAgroAI uses different folder names.
+    "anthracnose": "anthracnose",
 }
 
-# Ecuador dataset: only use these classes for transfer learning diversity.
-# EXCLUDE monilia, witches_broom, and any other Latin American classes.
-ECUADOR_ALLOWED_CLASSES = {
-    "healthy": "healthy",
-    "black_pod": "black_pod",  # present in Ecuador too, safe to include
+# Sykes Ecuador: ONLY these folders — exclude FPR and WBD (Latin American).
+SYKES_CLASS_MAP = {
+    "Healthy": "healthy",
+    "BPR": "black_pod",     # Black Pod Rot → our black_pod class
+    "healthy": "healthy",   # fallback lowercase
+    "bpr": "black_pod",
 }
 
 MIN_IMAGES_PER_CLASS = 200  # below this, warn and consider dropping the class
@@ -104,7 +109,7 @@ def verify_image(path: Path) -> bool:
 
 def check_class_coverage(images_by_class: dict[str, list[Path]]) -> bool:
     """Print class counts and return False if any required class is missing or low."""
-    required = {"healthy", "black_pod", "cssvd", "pod_borer", "mirid"}
+    required = {"healthy", "cssvd", "anthracnose", "black_pod"}
     ok = True
 
     print("\n── Class coverage check ──────────────────────────")
@@ -174,11 +179,11 @@ def main():
     karaagro_total = sum(len(v) for v in karaagro_images.values())
     print(f"  Found {karaagro_total} images across {len(karaagro_images)} classes")
 
-    # 2. Collect allowed images from Ecuador (supplementary)
-    print("\nCollecting Sykes Ecuador images (West African classes only)...")
-    ecuador_images = collect_images(RAW_ECUADOR, ECUADOR_ALLOWED_CLASSES)
+    # 2. Collect Healthy + BPR from Sykes Ecuador (supplementary)
+    print("\nCollecting Sykes Ecuador images (Healthy + BPR only, FPR/WBD excluded)...")
+    ecuador_images = collect_images(RAW_SYKES, SYKES_CLASS_MAP)
     ecuador_total = sum(len(v) for v in ecuador_images.values())
-    print(f"  Found {ecuador_total} images (filtered, Latin American classes excluded)")
+    print(f"  Found {ecuador_total} images (FPR and WBD excluded — Latin American diseases)")
 
     # 3. Merge datasets
     print("\nMerging datasets...")

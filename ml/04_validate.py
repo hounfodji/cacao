@@ -19,7 +19,7 @@ from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
+import keras
 from sklearn.metrics import (
     accuracy_score,
     classification_report,
@@ -205,8 +205,8 @@ def validate():
 
     # ── 5. [CRITICAL] Confidence fallback unit test ────────────────────────────
     print("\n── [CRITICAL] Confidence fallback test ───────────")
-    # Simulate model returning low-confidence output
-    low_conf_probs = np.array([0.25, 0.20, 0.20, 0.18, 0.17], dtype=np.float32)
+    # Simulate model returning low-confidence output (4 classes)
+    low_conf_probs = np.array([0.28, 0.25, 0.25, 0.22], dtype=np.float32)
     result = apply_confidence_threshold(low_conf_probs, CONFIDENCE_THRESHOLD)
     assert result is None, (
         f"CRITICAL: confidence fallback failed — returned {result} instead of None "
@@ -214,14 +214,14 @@ def validate():
     )
     print(f"  [OK] Low-confidence input (max={low_conf_probs.max():.2f}) → None (fallback)")
 
-    # Simulate high-confidence output
-    high_conf_probs = np.array([0.05, 0.80, 0.05, 0.05, 0.05], dtype=np.float32)
+    # Simulate high-confidence output → class 1 (cssvd)
+    high_conf_probs = np.array([0.05, 0.85, 0.05, 0.05], dtype=np.float32)
     result = apply_confidence_threshold(high_conf_probs, CONFIDENCE_THRESHOLD)
     assert result == 1, (
         f"CRITICAL: confidence fallback failed — returned {result} instead of 1 "
         f"for probs {high_conf_probs}"
     )
-    print(f"  [OK] High-confidence input (max={high_conf_probs.max():.2f}) → class 1 (black_pod)")
+    print(f"  [OK] High-confidence input (max={high_conf_probs.max():.2f}) → class 1 (cssvd)")
 
     # ── Summary ───────────────────────────────────────────────────────────────
     print("\n" + "=" * 50)
