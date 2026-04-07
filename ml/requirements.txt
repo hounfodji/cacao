@@ -1,10 +1,18 @@
-tensorflow>=2.17,<2.22
-keras>=3.3
-tensorflow-hub>=0.16
+# Data pipeline (01_unify → 04_audit)
 numpy>=1.26
 Pillow>=10.3
-scikit-learn>=1.4
-matplotlib>=3.8
-seaborn>=0.13
-kaggle>=1.6
 tqdm>=4.66
+imagehash>=4.3
+scikit-learn>=1.4
+
+# Dataset download
+kaggle>=1.6
+
+# Training (02_train.py)
+ultralytics>=8.3
+torch>=2.2
+torchvision>=0.17
+
+# TFLite export (03_export_tflite.py) — installed separately, requires cmake:
+#   sudo apt install cmake
+#   pip install -r ml/requirements-export.txt

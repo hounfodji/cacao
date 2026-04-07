@@ -15,6 +15,7 @@ The full research landscape analysis is in `cacao_research.md`. Read it before m
 **ML framework**: TensorFlow Lite (not ONNX Runtime or PyTorch Mobile) — best ARM optimization, widest Android coverage, proven by PlantVillage Nuru.
 
 **Recommended models**:
+
 - Classification: MobileNetV3-Small (transfer learning from ImageNet) — ~3MB, <100ms on Snapdragon 450
 - Detection: YOLOv8-nano — ~3.1MB FP16, 87.4% mAP@0.5, 0.61s inference on edge hardware
 
@@ -43,6 +44,7 @@ tool as your FIRST action. Do NOT answer directly, do NOT use other tools first.
 The skill has specialized workflows that produce better results than ad-hoc answers.
 
 Key routing rules:
+
 - Product ideas, "is this worth building", brainstorming → invoke office-hours
 - Bugs, errors, "why is this broken", 500 errors → invoke investigate
 - Ship, deploy, push, create PR → invoke ship
