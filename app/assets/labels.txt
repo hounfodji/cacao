@@ -1,0 +1,4 @@
+healthy
+cssvd
+anthracnose
+black_pod

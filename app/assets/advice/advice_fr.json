@@ -1,0 +1,18 @@
+{
+  "healthy": {
+    "title": "Cabosse saine",
+    "body": "Votre cabosse semble saine. Continuez la surveillance régulière et maintenez les bonnes pratiques culturales."
+  },
+  "cssvd": {
+    "title": "Virus du Swollen Shoot (CSSVD)",
+    "body": "Signes de CSSVD détectés. Il n'existe pas de traitement curatif. Isolez l'arbre malade, arrachez-le si confirmé, et contactez immédiatement votre vulgarisateur agricole. Évitez de planter à nouveau au même endroit pendant plusieurs années."
+  },
+  "anthracnose": {
+    "title": "Anthracnose",
+    "body": "Signes d'anthracnose détectés. Retirez et détruisez les cabosses atteintes. Taillez pour améliorer l'aération. Un fongicide cuivré peut être appliqué après avis d'un vulgarisateur."
+  },
+  "black_pod": {
+    "title": "Pourriture brune (Phytophthora)",
+    "body": "Signes de pourriture brune des cabosses. Retirez immédiatement les cabosses malades et sortez-les de la parcelle. Améliorez le drainage et l'aération. Consultez votre vulgarisateur pour un traitement fongicide adapté."
+  }
+}
