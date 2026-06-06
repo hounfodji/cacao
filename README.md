@@ -4,7 +4,7 @@ Offline-first cacao disease detection project focused on West African smallholde
 
 ## Repository structure
 
-- `app/` — Flutter Android application for on-device inference and diagnosis UI.
+- `app/` — Android application for on-device inference and diagnosis UI.
 - `ml/` — Dataset preparation, training, export, and validation scripts.
 - `cacao_research.md` — Research and landscape analysis.
 - `datasets.md` — Dataset notes and references.
