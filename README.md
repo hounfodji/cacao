@@ -29,4 +29,4 @@ Then run the numbered scripts in order (`00_*.py` → `04_*.py`) based on your p
 
 ## Project status
 
-The project includes a functional Flutter app scaffold and ML workflow assets, with ongoing validation and field-readiness work tracked in `TODOS.md`.
+The project includes a functional Android app scaffold and ML workflow assets, with ongoing validation and field-readiness work tracked in `TODOS.md`.
