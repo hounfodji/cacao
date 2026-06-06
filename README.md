@@ -15,18 +15,18 @@ Offline-first cacao disease detection project focused on West African smallholde
 ### Flutter app (`app/`)
 
 ```bash
-cd /tmp/workspace/hounfodji/cacao/app
+cd app
 flutter pub get
 flutter test
 flutter run --release
 ```
 
-See `/tmp/workspace/hounfodji/cacao/app/README.md` for full setup details.
+See `app/README.md` for full setup details.
 
 ### ML pipeline (`ml/`)
 
 ```bash
-cd /tmp/workspace/hounfodji/cacao/ml
+cd ml
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
