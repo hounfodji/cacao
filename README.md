@@ -12,16 +12,9 @@ Offline-first cacao disease detection project focused on West African smallholde
 
 ## Quick start
 
-### Flutter app (`app/`)
+### Android app (`app/`)
 
-```bash
-cd app
-flutter pub get
-flutter test
-flutter run --release
-```
-
-See `app/README.md` for full setup details.
+See `app/README.md` for setup, test, and deployment steps.
 
 ### ML pipeline (`ml/`)
 
